@@ -1,0 +1,40 @@
+{
+  "baseline": {
+    "task_count": 15,
+    "metrics": ["success_rate", "duration", "call_volume", "typical_errors"]
+  },
+  "tasks": [
+    {
+      "id": "TASK-1",
+      "check": {
+        "start_without_others": true,
+        "independently_checkable": true,
+        "no_shared_state_mutation": true
+      },
+      "decision": "split",
+      "contract": {
+        "problem": "收集 A/B 两个数据源的交易记录并分别核对一致性",
+        "inputs_tools": "data/src_a.parquet, data/src_b.parquet, tools: pandas, reconcile.py",
+        "deliverable": "核对报告：一致/冲突条目清单 + 依据(行号) + 未解决问题",
+        "stop_condition": "两侧条目全部核对完；连续 3 次同一冲突模式则停下报告模式",
+        "return_fields": ["conclusion", "evidence", "open_questions"]
+      },
+      "shared_state_via": "task_input",
+      "reviewer": "evidence_based"
+    },
+    {
+      "id": "TASK-2",
+      "check": {
+        "start_without_others": false,
+        "independently_checkable": true,
+        "no_shared_state_mutation": true
+      },
+      "decision": "keep_single",
+      "shared_state_via": "task_input",
+      "reviewer": "evidence_based"
+    }
+  ],
+  "retest": {
+    "metrics": ["quality", "time", "resource", "handoff_errors"]
+  }
+}

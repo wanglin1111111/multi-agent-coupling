@@ -1,0 +1,44 @@
+{
+  "baseline": {
+    "task_count": 5,
+    "metrics": ["success_rate", "duration"]
+  },
+  "tasks": [
+    {
+      "id": "TASK-1",
+      "check": {
+        "start_without_others": false,
+        "independently_checkable": true,
+        "no_shared_state_mutation": true
+      },
+      "decision": "split",
+      "contract": {
+        "problem": "长链规划：市场定位→定价→渠道→节奏",
+        "inputs_tools": "",
+        "deliverable": "方案",
+        "stop_condition": "",
+        "return_fields": ["conclusion"]
+      },
+      "shared_state_via": "context",
+      "reviewer": "similarity"
+    },
+    {
+      "id": "TASK-2",
+      "check": {
+        "start_without_others": true,
+        "independently_checkable": true,
+        "no_shared_state_mutation": false
+      },
+      "decision": "split",
+      "contract": {
+        "problem": "同时改订单服务与购物车服务",
+        "inputs_tools": "src/",
+        "deliverable": "代码改动",
+        "stop_condition": "改完",
+        "return_fields": ["changes", "test_results", "known_failures"]
+      },
+      "shared_state_via": "task_input",
+      "reviewer": "none"
+    }
+  ]
+}
